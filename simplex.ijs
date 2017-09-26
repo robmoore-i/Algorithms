@@ -11,4 +11,4 @@ pivotRowIdx=:I.@:(''&(maximumDeltaPivot`positivePivotIdxs`zeroes}))
 
 notOptimal=:1: - *./@:(0&<:)@:}.@:}:@:(0&{)
 simplexIterate=:(] pivot (pivotRowIdx , pivotColIdx))
-simplex=:simplexIterate@:(simplexIterate^:notOptimal^:_)
+simplex=:simplexIterate^:notOptimal^:_
