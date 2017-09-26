@@ -27,11 +27,11 @@ iRBcase2=:iNoRepair
 
 enblackChildren=:(BLACK&enc&.>)@:({. , {:)
 replaceChildren=:({.@:[ , 1 2 3&{@:] , {:@:[)
-iRBcase3=:(k@:[ RED&enc@:(enblackChildren replaceChildren ])@:gp iNoRepair) ([ iRB (k@:[ dropBranch ]))
+iRBcase3=:(k@:[ RED&enc@:(enblackChildren replaceChildren ])@:gp iNoRepair) iRB (k@:(k@:[ gp iNoRepair) dropBranch ])
 
 redSide=:I.@:(RED&=)@:>@:(c&.>)@:({. , {:) NB. 0 => left, 1 => right
-selectRotation=:({&(]`rotl`rotr))@:(redSide@:parent (]`(0:)@.=) redSide@:(k@:parent gp ]))
-rotatedParent=: 4 : '(((x (k@:[ selectRotation ]) y)`:6) (k x) parent y)'
+selectRotation=:({&(]`rotl`rotr))@:(redSide@:parent (]`(0:)@.=) redSide@:gp)
+rotatedParent=: 4 : '((x (k@:[ selectRotation ]) y)`:6) (k x) parent y'
 rChildL=:<@:[ , }.@:]
 rChildR=:}:@:] , <@:[
 childReplacementSelector=:({&(rChildL`rChildR))@:(k@:[ redSide@:gp ])
@@ -39,4 +39,6 @@ iRBcase4step1=:4 : '(x rotatedParent y) (x childReplacementSelector y)`:6] (k x)
 iRBcase4step2=:3 : '(({&(rotr`rotl))@:redSide y)`:6 (RED&enc)@:(enblackChildren replaceChildren ]) y'
 iRBcase4=:([ iRBcase4step2@:iRBcase4step1 iNoRepair) i ((k@:[ k@:gp iNoRepair) dropBranch ])
 
-iRB=:BLACK&enc@:((iRBcase4`iRBcase3@.(*./@:(RED&=)@:>@:(c&.>)@:({. , {:)@:((k@:[) gp iNoRepair)))`iRBcase2@.(k@:[ BLACK&=@:c@:parent iNoRepair)`iRBcase1@.(*./@:(a:&=)@:]))
+NB. First node must be inserted into the null tree, a:
+iRB=:BLACK&enc@:((iRBcase4`iRBcase3@.(*./@:(RED&=)@:>@:(c&.>)@:({. , {:)@:((k@:[) gp iNoRepair)))`iRBcase2@.(k@:[ BLACK&=@:c@:parent iNoRepair)`iRBcase1@.(*./@:(a:&=)@:])) NB. insert
+pRB=:iRB/@:(}: , (iRB&a:)@:{:)@:(kv"0) NB. populate
