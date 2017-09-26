@@ -9,6 +9,6 @@ positivePivotIdxs=:(I.@:,@:(0&<)@:pivotCol@:])
 maximumDeltaPivot=:(<./ = ])@:%~/@:(I.@:,@:(0&<)@:pivotCol {"1 ,@:pivotCol ,: ,@:({:"1))@:]
 pivotRowIdx=:I.@:(''&(maximumDeltaPivot`positivePivotIdxs`zeroes}))
 
-notOptimal=:-.@:*./@:(0&<:)@:}.@:}:@:(0&{)
+notOptimal=:1: - *./@:(0&<:)@:}.@:}:@:(0&{)
 simplexIterate=:(] pivot (pivotRowIdx , pivotColIdx))
 simplex=:simplexIterate@:(simplexIterate^:notOptimal^:_)
