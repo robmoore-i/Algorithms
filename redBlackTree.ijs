@@ -39,4 +39,4 @@ iRBcase4step1=:4 : '(x rotatedParent y) (x childReplacementSelector y)`:6] (k x)
 iRBcase4step2=:3 : '(({&(rotr`rotl))@:redSide y)`:6 (RED&enc)@:(enblackChildren replaceChildren ]) y'
 iRBcase4=:([ iRBcase4step2@:iRBcase4step1 iNoRepair) i ((k@:[ k@:gp iNoRepair) dropBranch ])
 
-iRB=:BLACK&enc@:(iRBcase3`iRBcase2@.(k@:[ BLACK&=@:c@:parent iNoRepair)`iRBcase1@.(*./@:(a:&=)@:]))
+iRB=:BLACK&enc@:((iRBcase4`iRBcase3@.(*./@:(RED&=)@:>@:(c&.>)@:({. , {:)@:((k@:[) gp iNoRepair)))`iRBcase2@.(k@:[ BLACK&=@:c@:parent iNoRepair)`iRBcase1@.(*./@:(a:&=)@:]))
