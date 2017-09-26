@@ -30,7 +30,7 @@ replaceChildren=:({.@:[ , 1 2 3&{@:] , {:@:[)
 iRBcase3=:(k@:[ RED&enc@:(enblackChildren replaceChildren ])@:gp iNoRepair) iRB (k@:(k@:[ gp iNoRepair) dropBranch ])
 
 redSide=:I.@:(RED&=)@:>@:(c&.>)@:({. , {:) NB. 0 => left, 1 => right
-selectRotation=:({&(]`rotl`rotr))@:(redSide@:parent (]`(0:)@.=) redSide@:gp)
+selectRotation=:({&(]`rotl`rotr))@:(redSide@:parent ((>:@:])`(0:)@.=) redSide@:gp)
 rotatedParent=: 4 : '((x (k@:[ selectRotation ]) y)`:6) (k x) parent y'
 rChildL=:<@:[ , }.@:]
 rChildR=:}:@:] , <@:[
