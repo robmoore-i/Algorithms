@@ -4,7 +4,10 @@ pivot=:[ - (({"1~ {:) - {.@] = i.@#@[) */ ({~ {.) % ({~ <)
 
 pivotColIdx=:{.@:(I.@:(<./ = ])@:(<@:(0&;)@:freeCols { ]) { freeCols)
 pivotCol=:{"1~ pivotColIdx
-pivotRowIdx=:I.@:(''&((<./ = ])@:%~/@:(I.@:,@:(0&<)@:pivotCol {"1 ,@:pivotCol ,: ,@:({:"1))@:]`(I.@:,@:(0&<)@:pivotCol@:])`(#&0@:#@:])}))
+zeroes=:(#&0@:#@:])
+positivePivotIdxs=:(I.@:,@:(0&<)@:pivotCol@:])
+maximumDeltaPivot=:(<./ = ])@:%~/@:(I.@:,@:(0&<)@:pivotCol {"1 ,@:pivotCol ,: ,@:({:"1))@:]
+pivotRowIdx=:I.@:(''&(maximumDeltaPivot`positivePivotIdxs`zeroes}))
 
 notOptimal=:-.@:*./@:(0&<:)@:}.@:}:@:(0&{)
 simplexIterate=:(] pivot (pivotRowIdx , pivotColIdx))
