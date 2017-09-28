@@ -35,8 +35,9 @@ w=:>@:(0&{) NB. weights. Call on the result of 'layer'
 b=:>@:(1&{) NB. biases.  Call on the result of 'layer'
 
 S=:mmu w
-Z=:sigmoid@:(b@:] +"1 S)
+Z=:sigmoid@:(S ([ +"1 (#@:[ # ])) b@:])
 
 feedThroughLayer=:Z nn&layer
+feedThroughNetwork=:(feedThroughLayer&1)@:(feedThroughLayer&0)
 
 outputError=:(+/"1)@:-:@:*:@:(-"1)
