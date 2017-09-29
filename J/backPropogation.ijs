@@ -22,12 +22,15 @@ Z=:sigmoid@:(S + b@:]) NB. Activations
 
 quadraticCost=:(+/"1)@:-:@:*:@:(-"1)
 
-eta=:0.5 NB. Learning rate
+eta=:0.1 NB. Learning rate
+
+mutation=: 3 : '(? % 100&*) 1000' NB. Returns a random value between 0 and 0.01
 
 activationDelta=:* (sigmoid D. 1) NB. Delta component from activation
 outputDelta=:- activationDelta [  NB. Delta component from final output
-updateOutputWeights=:- |:@:(eta&*)
-updateHiddenWeights=:- eta&*
+updateTranspose=:- |:@:(eta&*)@:(mutation + ])
+updateInshape=:- (eta&*)@:(mutation + ])
+updateBias=:updateInshape
 
 NB. W is weights
 NB. X is input
@@ -37,44 +40,49 @@ NB. H is the activation of the hidden layer
 backpropOutputWeights=:4 : 0
   'W C H'=.x;y
   times=.((*/)`(*"1))@.(*@:<:@:#@:$@:]) NB. Accounts for rank issues from unit size minibatches
-  W updateOutputWeights C times H
+  W updateTranspose C times H
 )
 
 backpropHiddenWeights=:4 : 0
-  'Wthis Wprev C H X'=.x,y
-  Wthis updateHiddenWeights (Wprev mmu C) * (X activationDelta H)
+  'W delta H X'=.x;y
+  W updateInshape delta * (X activationDelta H)
 )
 
 trainSingleMinibatch=:4 : 0
   'X T'=.x
   'W01 B1 W12 B2'=.,@:> y
-  H=.X Z nn layer 0
-  Y=.H Z nn layer 1
+  H=.X Z y layer 0
+  Y=.H Z y layer 1
   C=.Y outputDelta T
   newW12=.W12 backpropOutputWeights C;H
-  newW01=.(W01;W12) backpropHiddenWeights C;H;X
-  <"1 (newW01;B1),:(newW12;B2)
+  newB1=.B1 updateBias C
+  delta=.W12 mmu C
+  newW01=.W01 backpropHiddenWeights delta;H;X
+  newB2=.B2 updateBias delta
+  <"1 (newW01;newB1),:(newW12;newB2)
 )
 
-randomInput=:3 : '(2&? % ]) 100'
-input=:(randomInput"0) 100#0
-target=:+/"1 input
-trainingSet=:(<"1 input) ,. (<"0 target)
-feedThroughNetwork=:((Z nn&layer)&1)@:((Z nn&layer)&0)
+NB. 'trainingSet trainThroughSet NN' will consume the entire trainingSet
+trainThroughSet=: (]`(}.@:[ $: ({.@:[ trainSingleMinibatch ])))@.(*@:#@:[)
 
-NB. (1{trainingSet) trainSingleMinibatch (0{trainingSet) trainSingleMinibatch nn
-NB. Needs automation for going through the set.
+NB. Trains the network under the trainingSet, then shows the output of running the
+NB. given inputs through the trained network.
+showLearningResults=: 4 : 0
+  'inputs trainingSet'=.y
+  trainedNet=.trainingSet trainThroughSet x
+  (<"1 inputs) ,. <"0 ((Z&(trainedNet layer 1))@:(Z&(trainedNet layer 0))"1) inputs
+)
 
-NB. An example network - 2-2-2
+NB. x = possible inputs, y = size of set, u = target function applied to each input
+generateTrainingSet=:1 : 0
+:
+  x (] ,. (u L:0))@:((<"1)@:([ ({~ ?) (# #)~)) y
+)
 
-W01=:2 2 $ 0.15 0.25 0.20 0.3
-B1 =:0.35 0.35
-W12=:2 2 $ 0.4 0.5 0.45 0.55
-B2 =:0.6 0.6
-NN=:<"1 (W01;B1),:(W12;B2)
-
-TARGET=:0.01 0.99
-IN =:0.05 0.1
-H_ACTV=:IN Z nn layer 0
-OUT=:(IN Z (nn layer 0)) Z (nn layer 1)
-COST=:OUT outputDelta TARGET
+NB. Example: XOR
+size=:1000
+booleanCombinations=:4 2 $ 0 0 0 1 1 0 1 1
+targetFunction=:{. ~: {: NB. xor applied to 2-element list
+trainingSet=:booleanCombinations (targetFunction generateTrainingSet) size
+XOR_NET=:<"1 ((2 2 $ 0.15 0.25 0.20 0.3);(0.35 0.35)),:((0.4 0.5);(0.6))
+r=:XOR_NET showLearningResults booleanCombinations;<trainingSet
