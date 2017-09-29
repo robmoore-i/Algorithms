@@ -9,14 +9,6 @@ NB.   nth neuron of previous layer to the mth neuron of next layer.
 NB. Bias list: For layer i, denoted Bi
 NB.   nth element represents bias in the nth neuron of layer i
 
-NB. An example network - 2-2-2
-IN =:0.05 0.1
-W01=:2 2 $ 0.15 0.25 0.20 0.3
-B1 =:0.35 0.35
-W12=:2 2 $ 0.4 0.5 0.45 0.55
-B2 =:0.6 0.6
-nn=:<"1 (W01;B1),:(W12;B2)
-
 mmu=:+/ .*
 softmax=:^ % +/@:^
 sigmoid=:((^ % >:@:^)`((* 1&-)~)) D. 1
@@ -34,7 +26,6 @@ eta=:0.5 NB. Learning rate
 
 activationDelta=:* (sigmoid D. 1) NB. Delta component from activation
 outputDelta=:- activationDelta [  NB. Delta component from final output
-weightDelta=:[: (+/"1) (*"1)      NB. Delta component from weights of next layer
 updateOutputWeights=:- |:@:(eta&*)
 updateHiddenWeights=:- eta&*
 
@@ -51,7 +42,7 @@ backpropOutputWeights=:4 : 0
 
 backpropHiddenWeights=:4 : 0
   'Wthis Wprev C H X'=.x,y
-  Wthis updateHiddenWeights (Wprev weightDelta C) * (X activationDelta H)
+  Wthis updateHiddenWeights (Wprev mmu C) * (X activationDelta H)
 )
 
 trainSingleMinibatch=:4 : 0
@@ -73,3 +64,17 @@ feedThroughNetwork=:((Z nn&layer)&1)@:((Z nn&layer)&0)
 
 NB. (1{trainingSet) trainSingleMinibatch (0{trainingSet) trainSingleMinibatch nn
 NB. Needs automation for going through the set.
+
+NB. An example network - 2-2-2
+
+W01=:2 2 $ 0.15 0.25 0.20 0.3
+B1 =:0.35 0.35
+W12=:2 2 $ 0.4 0.5 0.45 0.55
+B2 =:0.6 0.6
+NN=:<"1 (W01;B1),:(W12;B2)
+
+TARGET=:0.01 0.99
+IN =:0.05 0.1
+H_ACTV=:IN Z nn layer 0
+OUT=:(IN Z (nn layer 0)) Z (nn layer 1)
+COST=:OUT outputDelta TARGET
