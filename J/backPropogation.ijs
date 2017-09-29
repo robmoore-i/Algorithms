@@ -82,12 +82,13 @@ generateTrainingSet=:1 : 0
 :
   x (] ,. (u L:0))@:((<"1)@:([ ({~ ?) (# #)~)) y
 )
+
 NB. Example: An XOR training set
 size=:1000
 modelInputs =:4 2 $ 0 0  0 1  1 0  1 1
 modelOutputs=:       0    1    1    0
 targetFunction=:{. ~: {:
-trainingSet=:booleanCombinations (targetFunction generateTrainingSet) size
+trainingSet=:modelInputs (targetFunction generateTrainingSet) size
 
 NB. Example: XOR network results:
 XOR_NET=:<"1 ((2 2 $ 0.15 0.25 0.20 0.3);(0.35 0.35)),:((0.4 0.5);(0.6))
