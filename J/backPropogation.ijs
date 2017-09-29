@@ -62,15 +62,19 @@ trainSingleMinibatch=:4 : 0
   <"1 (newW01;newB1),:(newW12;newB2)
 )
 
-NB. 'trainingSet trainThroughSet NN' will consume the entire trainingSet
 trainThroughSet=: (]`(}.@:[ $: ({.@:[ trainSingleMinibatch ])))@.(*@:#@:[)
 
 NB. Trains the network under the trainingSet, then shows the output of running the
 NB. given inputs through the trained network.
 showLearningResults=: 4 : 0
-  'inputs trainingSet'=.y
+  'modelInputs modelOutputs trainingSet'=.y
   trainedNet=.trainingSet trainThroughSet x
-  (<"1 inputs) ,. <"0 ((Z&(trainedNet layer 1))@:(Z&(trainedNet layer 0))"1) inputs
+  untrainedFeedforward=.((Z&(x layer 1))@:(Z&(x layer 0))"1) modelInputs
+  trainedFeedforward=.((Z&(trainedNet layer 1))@:(Z&(trainedNet layer 0))"1) modelInputs
+  untrainedCosts=.untrainedFeedforward (<"0)@:(quadraticCost"0) modelOutputs
+  trainedCosts=.trainedFeedforward (<"0)@:(quadraticCost"0) modelOutputs
+  headers=:;:'input target untrained_output untrained_cost trained_output trained_cost'
+  headers , (<"1 modelInputs) ,. (<"0 modelOutputs) ,. (<"0 untrainedFeedforward) ,. untrainedCosts ,. (<"0 trainedFeedforward) ,. trainedCosts
 )
 
 NB. x = possible inputs, y = size of set, u = target function applied to each input
@@ -78,11 +82,12 @@ generateTrainingSet=:1 : 0
 :
   x (] ,. (u L:0))@:((<"1)@:([ ({~ ?) (# #)~)) y
 )
-
-NB. Example: XOR
+NB. Example: An XOR training set
 size=:1000
 booleanCombinations=:4 2 $ 0 0 0 1 1 0 1 1
-targetFunction=:{. ~: {: NB. xor applied to 2-element list
+targetFunction=:{. ~: {:
 trainingSet=:booleanCombinations (targetFunction generateTrainingSet) size
+
+NB. Example: XOR network results:
 XOR_NET=:<"1 ((2 2 $ 0.15 0.25 0.20 0.3);(0.35 0.35)),:((0.4 0.5);(0.6))
-r=:XOR_NET showLearningResults booleanCombinations;<trainingSet
+r=:XOR_NET showLearningResults booleanCombinations;(0 1 1 0);<trainingSet
