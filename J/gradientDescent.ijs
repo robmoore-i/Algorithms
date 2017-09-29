@@ -70,8 +70,8 @@ backpropHiddenWeights=:4 : 0
 NB. e.g. (W01;W12) backpropHiddenWeights ((Y outputDelta T);(hiddenLayerActivation X);X)
 
 trainSingleMinibatch=:4 : 0
-  'X T nn'=.x;y
-  'W01 B1 W12 B2'=.,@:> nn
+  'X T'=.x
+  'W01 B1 W12 B2'=.,@:> y
   H=.X Z nn layer 0
   Y=.H Z nn layer 1
   C=.Y outputDelta T
@@ -79,3 +79,11 @@ trainSingleMinibatch=:4 : 0
   newW01=.(W01;W12) backpropHiddenWeights C;H;X
   <"1 (newW01;B1),:(newW12;B2)
 )
+
+randomInput=:3 : '(2&? % ]) 100'
+input=:(randomInput"0) 100#0
+target=:+/"1 input
+trainingSet=:(<"1 input) ,. (<"0 target)
+
+NB. (1{trainingSet) trainSingleMinibatch (0{trainingSet) trainSingleMinibatch nn
+NB. Needs automation for going through the set.
