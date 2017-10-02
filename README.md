@@ -7,6 +7,7 @@ Getting some proper practice writing algorithms and data structures.
 - Simplex method for linear programming
 - Power iteration
 - Back propogation
+- Cholesky decomposition
 
 # To do
 - Red black tree deletion
