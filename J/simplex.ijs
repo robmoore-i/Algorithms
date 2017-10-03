@@ -11,10 +11,10 @@ pivotCol=:{"1~ pivotColIdx
 zeroes=:(#&0@:#@:])
 positivePivotIdxs=:(I.@:,@:(0&<)@:pivotCol@:])
 maximumDeltaPivot=:(<./ = ])@:%~/@:(I.@:,@:(0&<)@:pivotCol {"1 ,@:pivotCol ,: ,@:({:"1))@:]
-pivotRowIdx=:I.@:(''&(maximumDeltaPivot`positivePivotIdxs`zeroes}))
+pivotRowIdx=:{.@:I.@:(''&(maximumDeltaPivot`positivePivotIdxs`zeroes}))
 
 notOptimal=:1: - *./@:(0&<:)@:}.@:}:@:(0&{)
 simplexIterate=:(] pivot (pivotRowIdx , pivotColIdx))
+fromStandardForm=:({.@:{. , }.@:-@:{.) , }.
 NB. simplex M - Objective row must be on the top, the constraint rows then follow.
-fromStandardForm=:(-@:{. , }.) :. (-@:{. , }.)
-simplex=:(simplexIterate^:notOptimal^:_)&.fromStandardForm
+simplex=:fromStandardForm@:(simplexIterate^:notOptimal^:_)
