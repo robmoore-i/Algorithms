@@ -9,8 +9,10 @@ Getting some proper practice writing algorithms and data structures.
 - Back propogation
 - Cholesky decomposition
 
-# To do
-- Red black tree deletion
-- Patricia tries
+# I am not skilled enough yet to do
 - Ukkonen's suffix tree construction
-- At least one distributed algorithm
+
+# To do
+- Patricia tries
+- PageRank
+- Rubik's cube solver
