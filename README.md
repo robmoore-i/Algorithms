@@ -9,10 +9,10 @@ Getting some proper practice writing algorithms and data structures.
 - Back propogation
 - Cholesky decomposition
 
-# I am not skilled enough yet to do
+# In progress
 - Ukkonen's suffix tree construction
 
-# To do
+# To do/find out is too hard
 - Patricia tries
 - PageRank
 - Rubik's cube solver
