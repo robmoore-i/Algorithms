@@ -1,6 +1,6 @@
-NB. The algorithm gives a strictly maximising solution,
-NB.   so minimisation problems must have their objective
-NB.   function negated to move it into standard form.
+NB. The algorithm gives a strictly minimising solution,
+NB.   so maximisation problems must have their objective
+NB.   function negated to move them into standard form.
 
 basicCols=:I.@:((|.@:(0&=)@:i.@:{.@:$) *./@:="1 ((/:~)"1@:|:))
 freeCols=:(i.@:<:@:{:@:$ -. basicCols)
@@ -16,4 +16,5 @@ pivotRowIdx=:I.@:(''&(maximumDeltaPivot`positivePivotIdxs`zeroes}))
 notOptimal=:1: - *./@:(0&<:)@:}.@:}:@:(0&{)
 simplexIterate=:(] pivot (pivotRowIdx , pivotColIdx))
 NB. simplex M - Objective row must be on the top, the constraint rows then follow.
-simplex=:simplexIterate^:notOptimal^:_
+fromStandardForm=:(-@:{. , }.) :. (-@:{. , }.)
+simplex=:(simplexIterate^:notOptimal^:_)&.fromStandardForm
