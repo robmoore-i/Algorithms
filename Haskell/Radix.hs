@@ -3,7 +3,22 @@ module Radix where
 data Label = E | L Char           -- Epsilon | Label
   deriving (Show, Eq)
 data Node = N [(Label, Node)] | T -- Node | Terminal
-  deriving (Show, Eq)
+  deriving (Eq)
+
+razeLF :: [String] -> String
+razeLF = foldl1 (\x y -> x ++ "\n" ++ y)
+
+showBranch :: String -> (Label, Node) -> String
+showBranch tabs (E, T)          = tabs ++ "E-T"
+showBranch tabs (L c, T)        = tabs ++ "L(" ++ [c] ++ ")-T"
+showBranch tabs (l, N branches) = tabs ++ (show l) ++ "\n" ++ (razeLF $ map (showBranch ('\t' : tabs)) branches)
+
+showNode :: Node -> String
+showNode T            = "T"
+showNode (N branches) = razeLF $ map (showBranch "") branches
+
+instance Show (Node) where
+  show = showNode
 
 d :: (Label, Node)
 d = (E, T)                        -- Done
@@ -18,9 +33,6 @@ insert (c:cs) (N branches) =
     Nothing               -> N ((l, insert cs T) : branches)
     Just T                -> N [(l, insert cs T)]
     Just (N moreBranches) -> N (update l (insert cs (N moreBranches)) branches)
-
-updateNode :: Label -> Node -> [(Label, Node)] -> Node
-updateNode label node branches = N (update label node branches)
 
 update :: Eq a => a -> b -> [(a, b)] -> [(a, b)]
 update key newVal [] = []
