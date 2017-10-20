@@ -5,20 +5,17 @@ data Label = E | L Char           -- Epsilon | Label
 data Node = N [(Label, Node)] | T -- Node | Terminal
   deriving (Eq)
 
-razeLF :: [String] -> String
-razeLF = foldl1 (\x y -> x ++ "\n" ++ y)
-
-showBranch :: String -> (Label, Node) -> String
-showBranch tabs (E, T)          = tabs ++ "E-T"
-showBranch tabs (L c, T)        = tabs ++ "L(" ++ [c] ++ ")-T"
-showBranch tabs (l, N branches) = tabs ++ (show l) ++ "\n" ++ (razeLF $ map (showBranch ('\t' : tabs)) branches)
-
-showNode :: Node -> String
-showNode T            = "T"
-showNode (N branches) = razeLF $ map (showBranch "") branches
+razeNewLine :: [String] -> String -- Raze with interspersed newlines
+razeNewLine = foldl1 (\x y -> x ++ "\n" ++ y)
 
 instance Show (Node) where
-  show = showNode
+  show T = "T"
+  show (N branches) = razeNewLine $ map (showBranch "") branches
+    where
+      showBranch :: String -> (Label, Node) -> String
+      showBranch tabs (E, T)          = tabs ++ "E-T"
+      showBranch tabs (L c, T)        = tabs ++ "L(" ++ [c] ++ ")-T"
+      showBranch tabs (l, N branches) = tabs ++ (show l) ++ "\n" ++ (razeNewLine $ map (showBranch ("  " ++ tabs)) branches)
 
 d :: (Label, Node)
 d = (E, T)                        -- Done
