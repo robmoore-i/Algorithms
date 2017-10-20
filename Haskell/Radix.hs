@@ -35,9 +35,5 @@ createRadixTree :: [String] -> Node
 createRadixTree = foldl insert T
 
 updateAssoc :: Eq a => a -> b -> [(a, b)] -> [(a, b)]
-updateAssoc key newVal [] = []
-updateAssoc key newVal ((k, v) : rest) =
-  if key == k
-  then (k, newVal) : rest
-  else (k, v) : updateAssoc key newVal rest
-
+updateAssoc key newVal []    = []
+updateAssoc key newVal assoc = (key, newVal) : filter (\(k, v) -> key /= k) assoc
