@@ -29,15 +29,15 @@ insert (N branches) (c:cs) =
   case lookup l branches of
     Nothing               -> N ((l, insert T cs) : branches)
     Just T                -> N [(l, insert T cs)]
-    Just (N moreBranches) -> N (update l (insert (N moreBranches) cs) branches)
+    Just (N moreBranches) -> N (updateAssoc l (insert (N moreBranches) cs) branches)
 
 createRadixTree :: [String] -> Node
 createRadixTree = foldl insert T
 
-update :: Eq a => a -> b -> [(a, b)] -> [(a, b)]
-update key newVal [] = []
-update key newVal ((k, v) : rest) =
+updateAssoc :: Eq a => a -> b -> [(a, b)] -> [(a, b)]
+updateAssoc key newVal [] = []
+updateAssoc key newVal ((k, v) : rest) =
   if key == k
   then (k, newVal) : rest
-  else (k, v) : update key newVal rest
+  else (k, v) : updateAssoc key newVal rest
 
