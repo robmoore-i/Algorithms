@@ -20,16 +20,19 @@ instance Show (Node) where
 d :: (Label, Node)
 d = (E, T)                        -- Done
 
-insert :: [Char] -> Node -> Node
-insert [] T                = N [d]
-insert [] n                = n
-insert (c:cs) T            = N [(L c, insert cs T)]
-insert (c:cs) (N branches) =
+insert :: Node -> [Char] -> Node
+insert T []                = N [d]
+insert n []                = n
+insert T (c:cs)            = N [(L c, insert T cs)]
+insert (N branches) (c:cs) =
   let l = L c in
   case lookup l branches of
-    Nothing               -> N ((l, insert cs T) : branches)
-    Just T                -> N [(l, insert cs T)]
-    Just (N moreBranches) -> N (update l (insert cs (N moreBranches)) branches)
+    Nothing               -> N ((l, insert T cs) : branches)
+    Just T                -> N [(l, insert T cs)]
+    Just (N moreBranches) -> N (update l (insert (N moreBranches) cs) branches)
+
+createRadixTree :: [String] -> Node
+createRadixTree = foldl insert T
 
 update :: Eq a => a -> b -> [(a, b)] -> [(a, b)]
 update key newVal [] = []
