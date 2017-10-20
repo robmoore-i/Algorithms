@@ -14,6 +14,7 @@ Getting some proper practice writing algorithms and data structures.
 
 # In progress
 - Ukkonen's suffix tree construction
+- Radix tree search
 
 # To do/find out is too hard
 - Patricia tries
