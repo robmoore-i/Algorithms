@@ -7,37 +7,39 @@
 
 // Root @ 0 idx
 
-p:{floor x%2} // parent
+.heap.p:{floor x%2} // parent
 
-swap:{[a;i1;i2]
+.heap.swap:{[a;i1;i2]
   a[(i1;i2)]:a[(i2;i1)];
   a}
 
-hi:{[heap;n] // heap insert.
-  size:sum not null heap;
+.heap.size:{[heap]sum not null heap}
+
+.heap.hi:{[heap;n] // heap insert.
+  size:.heap.size heap;
   if[count heap=size;heap:heap,size#0N]; // double size if full
   heap[idx:size]:n;
-  while[heap[idx]<heap[parent:p idx];
-    heap:swap[heap;idx;parent];
+  while[heap[idx]<heap[parent:.heap.p idx];
+    heap:.heap.swap[heap;idx;parent];
     idx:parent];
   heap}
 
-build:{[elements]hi/[1#elements;1_elements]}
+.heap.build:{[elements].heap.hi/[1#elements;1_elements]}
 
-pop:{[heap]
+.heap.pop:{[heap]
   r:heap[0];
-  (r;pd heap)}
+  (r;.heap.pd heap)}
 
-children:{[heap;idx]heap[1 2 + 2*idx]}
+.heap.children:{[heap;idx]heap[1 2 + 2*idx]}
 
-minChildIdx:{[heap;parentIdx].[>;children[heap;parentIdx]]+1+2*parentIdx}
+.heap.minChildIdx:{[heap;pIdx].[>;.heap.children[heap;pIdx]]+1+2*pIdx}
 
-leaf:{[heap;idx]all 0N=children[heap;idx]}
+.heap.leaf:{[heap;idx]all 0N=.heap.children[heap;idx]}
 
-pd:{[heap] // percolating down
+.heap.pd:{[heap] // percolating down
   heap[idx:0]:0N;
-  while[not leaf[heap;idx];
-    mIdx:minChildIdx[heap;idx];
-    heap:swap[heap;mIdx;idx];
+  while[not .heap.leaf[heap;idx];
+    mIdx:.heap.minChildIdx[heap;idx];
+    heap:.heap.swap[heap;mIdx;idx];
     idx:mIdx]
   next heap}
