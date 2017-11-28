@@ -12,11 +12,12 @@ Getting some proper practice writing algorithms and data structures.
 - Kruskal
 - Boyer-Moore string matching
 
-# In progress
-- Ukkonen's suffix tree construction
-- Radix tree search
-
-# To do/find out is too hard
+# To do
 - Patricia tries
 - PageRank
 - Rubik's cube solver
+- Radix trees
+- Ukkonen's suffix tree construction
+- BFS
+- Simplex with Bland's rule
+- Integer programming with Gomory cuts, Knapsack cover cuts and branch & bound
