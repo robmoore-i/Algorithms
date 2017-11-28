@@ -20,10 +20,9 @@ tableau:{[I;A;c;b]
   cnsRows:"f"$(nB#0),'id,'((!B)$N),'(!B)$b;
   fpe (,objRow),cnsRows}
 
-respace:{updateSpacing[x;0;&:'x=\:" "]}
-updateSpacing:{[txt;row;M]
+respace:{[txt]
   row:0;
-  n:#*M;
+  n:#*M:&:'txt=\:" ";
   while[row<n;
     txt:(r#'txt),'((d:max[r]-r)#\:" "),'(r:M@\:row)_'txt;
     M:(row#/:M),'d+'row_/:M;
