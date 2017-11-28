@@ -27,8 +27,9 @@ updateSpacing:{[txt;row;M]
   while[row<n;
     txt:(r#'txt),'((d:max[r]-r)#\:" "),'(r:M@\:row)_'txt;
     M:(row#/:M),'d+'row_/:M;
-    row+:1];    
-  txt}
+    row+:1];
+  withHeader:((,txt[0]),,:(#*txt)#"-"),1_txt;
+  @[;*M;:;"|"]'withHeader}
 
 // Given a simplex tableau t with index set I, adds column/row labels and
 // prints it nicely.
