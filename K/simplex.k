@@ -1,6 +1,13 @@
 // Minimise   Z   = c*x
 // Subject to A$x = b
 
+// You must by hand convert the problem to standard form.
+// Recall that an LP is in standard form if:
+// => Objective is a minimisation
+// => Constraints are linear equalities
+// => RHS of every constraint is non-negative
+// => All decision variables are non-negative.
+
 // Given a matrix of floats, amends all values sufficiently close to 0 with 0
 fpe:{((#x);(#*x))#@[rx;&abs[rx:,/x]<0.0001;:;0f]}
 
@@ -12,13 +19,13 @@ tableau:{[I;A;c;b]
   cN:c@nI;
   r:cN-(+N)$(+!B)$cB;
   bs:(!B)$b;
-  obj:sum cB*bs;
+  Z:sum cB*bs;
   nB:#I;
   nN:#nI;
-  objRow:"f"$,/1,(nB#0),(-:r),obj;
+  zRow:"f"$,/1,(nB#0),(-:r),Z;
   id:"f"$0=(2#nB)#!1+nB;
-  cnsRows:"f"$(nB#0),'id,'((!B)$N),'(!B)$b;
-  fpe (,objRow),cnsRows}
+  cRows:"f"$(nB#0),'id,'((!B)$N),'(!B)$b;
+  fpe (,zRow),cRows}
 
 // Aligns the whitespace separated columns represented in the lines of TXT,
 // then adds pipe separators between the columns.
