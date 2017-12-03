@@ -56,22 +56,28 @@ showTableau:{[t;I]
 showBFS:{[A;b;I;X]
   isSolution:$[b~+/'A*\:X;"";"non-"],"solution";
   isBasic:$[min 0=X a@&~(a:(!#X)) in -1+I;"";"non-"],"basic";
-  isFeasible:$[min 0<X;"";"in"],"feasible";
+  isFeasible:$[(8=#isSolution)&min 0<X;"";"in"],"feasible";
   isBasic," ",isFeasible," ",isSolution}
 
 // Given a tableau t and index set I, will return the corresponding basic
 // solution.
 readBasicSolution:{[t;I]@[(#*{-1_1_x}'t)#0f;-1+I;:;last'1_t]}
 
-// Given a p∈ I and a q∉ I
-// ...
+// Given a tableau t, a p∈ I and a q∉ I, perform a pivot on (p, q) such that
+// xp leaves the basis and xq enters the basis, returning the resulting
+// pivoted tableau.
+pivot:{[t;p;q]t-t[p]*/:@[A2@\:q;p;:;0]}
 
-// Example:
-A:2 8#2 -1 3 2 3 2 1 0 3 4 2 2 3 0 0 1f
-b:4 2f
-c:6 3 4 2 -3 4 0 0f
-I:4 3
-t:tableau[A;b;c;I]
-ta:showTableau[t;I]
-bs:readBasicSolution[t;I]
-bfs:showBFS[A;b;I;bs]
+// Example 1:
+A1:2 8#2 -1 3 2 3 2 1 0 3 4 2 2 3 0 0 1f
+b1:4 2f
+c1:6 3 4 2 -3 4 0 0f
+I1:4 3
+t1:tableau[A1;b1;c1;I1]
+ta1:showTableau[t1;I1]
+bs1:readBasicSolution[t1;I1]
+bfs1:showBFS[A1;b1;I1;bs1]
+
+// Example 2:
+A2:4 8#1 0 0 0 1 2 1 1 0 1 0 0 1 1 -1 5 0 0 1 0 2 -3 1 3 0 0 0 1 -1 2 -1 -1
+I2:1 2 3
