@@ -8,6 +8,9 @@
 // => RHS of every constraint is non-negative
 // => All decision variables are non-negative.
 
+// Swaps rows Y and Z in matrix X.
+swapRows:{tmp:x[y];x[y]:x[z];x[z]:tmp;x}
+
 // Given a matrix of floats, amends all values sufficiently close to 0 with 0
 fpe:{((#x);(#*x))#@[rx;&abs[rx:,/x]<0.0001;:;0f]}
 
@@ -47,6 +50,12 @@ annotate:{[I;t]
   rowLabels:"Z","x",/:$I;
   withLabels:(,colLabels),(rowLabels,\:" "),'" "/:'$t;
   pipeSpace withLabels}
+
+checkBFS:{[A;b;I;x]
+  isSolution:$[b~+/'A*\:x;"";"non-"],"solution";
+  isBasic:$[min 0=x a@&~(a:(!#x)) in -1+I;"";"non-"],"basic";
+  isFeasible:$[min 0<x;"";"in"],"feasible";
+  isBasic," ",isFeasible," ",isSolution}
 
 // Example:
 A:2 8#2 -1 3 2 3 2 1 0 3 4 2 2 3 0 0 1f
