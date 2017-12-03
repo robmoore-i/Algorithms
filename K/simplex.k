@@ -14,8 +14,8 @@ swapRows:{tmp:x[y];x[y]:x[z];x[z]:tmp;x}
 // Given a matrix of floats, amends all values sufficiently close to 0 with 0
 fpe:{((#x);(#*x))#@[rx;&abs[rx:,/x]<0.0001;:;0f]}
 
-// Given an index set I, constraints A,b and objective c, produces a tableau.
-tableau:{[I;A;c;b]
+// Given constraints A,b, objective c, and index set I: produces a tableau.
+tableau:{[A;b;c;I]
   B:A@\:bI:-1+I;
   N:A@\:nI:e@&~:max$["b"]bI=\:e:!#*A;
   cB:c@bI;
@@ -43,7 +43,7 @@ pipeSpace:{[txt]
 
 // Given a simplex tableau t with index set I, adds column/row labels and
 // prints it nicely.
-annotate:{[I;t]
+showTableau:{[t;I]
   n:#*t;
   notI:1+e@&~:max$["b"](-1+I)=\:e:!-2+#*t
   colLabels:" "/:("BV";,"Z"),("x",/:$I,notI),(,"RHS");
@@ -51,16 +51,25 @@ annotate:{[I;t]
   withLabels:(,colLabels),(rowLabels,\:" "),'" "/:'$t;
   pipeSpace withLabels}
 
-checkBFS:{[A;b;I;x]
-  isSolution:$[b~+/'A*\:x;"";"non-"],"solution";
-  isBasic:$[min 0=x a@&~(a:(!#x)) in -1+I;"";"non-"],"basic";
-  isFeasible:$[min 0<x;"";"in"],"feasible";
+// Given the constraints A, b, the index set I and a candidate vector X,
+// will print some text containing whether X is in fact a solution to the
+// constraints, if it is basic and if it is feasible.
+showBFS:{[A;b;I;X]
+  isSolution:$[b~+/'A*\:X;"";"non-"],"solution";
+  isBasic:$[min 0=X a@&~(a:(!#X)) in -1+I;"";"non-"],"basic";
+  isFeasible:$[min 0<X;"";"in"],"feasible";
   isBasic," ",isFeasible," ",isSolution}
+
+// Given a tableau t and index set I, will return the corresponding basic
+// solution.
+readBasicSolution:{[t;I]@[(#*{-1_1_x}'t)#0f;-1+I;:;last'1_t]}
 
 // Example:
 A:2 8#2 -1 3 2 3 2 1 0 3 4 2 2 3 0 0 1f
 b:4 2f
 c:6 3 4 2 -3 4 0 0f
 I:4 3
-t:tableau[I;A;c;b]
-ta:annotate[I;t]
+t:tableau[A;b;c;I]
+ta:showTableau[t;I]
+bs:readBasicSolution[t;I]
+bfs:showBFS[A;b;I;bs]
