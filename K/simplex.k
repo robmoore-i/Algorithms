@@ -17,7 +17,7 @@ fpe:{((#x);(#*x))#@[rx;&abs[rx:,/x]<0.0001;:;0f]}
 // Given constraints A,b, objective c, and index set I: produces a tableau.
 tableau:{[A;b;c;I]
   B:A@\:bI:-1+I;
-  N:A@\:nI:e@&~:max$["b"]bI=\:e:!#*A;
+  N:A@\:nI:e@&~:max bI=\:e:!#*A;
   cB:c@bI;
   cN:c@nI;
   r:cN-(+N)$(+!B)$cB;
@@ -45,7 +45,7 @@ pipeSpace:{[txt]
 // prints it nicely.
 showTableau:{[t;I]
   n:#*t;
-  notI:1+e@&~:max$["b"](-1+I)=\:e:!-2+#*t
+  notI:1+e@&~:max (-1+I)=\:e:!-2+#*t
   colLabels:" "/:("BV";,"Z"),("x",/:$I,notI),(,"RHS");
   rowLabels:"Z","x",/:$I;
   withLabels:(,colLabels),(rowLabels,\:" "),'" "/:'$t;
