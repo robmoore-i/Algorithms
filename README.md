@@ -8,13 +8,12 @@ Getting some proper practice writing algorithms and data structures.
 - Power iteration
 - Back propogation
 - Cholesky decomposition
-- Dijkstra
-- Kruskal
+- Dijkstra's shortest paths algorithm
+- Kruskal's minimum spanning tree algorithm
 - Boyer-Moore string matching
 
 # To do
 - Patricia tries
-- PageRank
 - Rubik's cube solver
 - Radix trees
 - Ukkonen's suffix tree construction
