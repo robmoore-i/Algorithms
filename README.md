@@ -7,7 +7,7 @@ Getting some proper practice writing algorithms and data structures.
 - Simplex method for linear programming
 - Power iteration
 - Back propogation
-- Cholesky decomposition-
+- Cholesky decomposition
 - Dijkstra
 - Kruskal
 - Boyer-Moore string matching
