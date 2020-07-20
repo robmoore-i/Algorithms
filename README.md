@@ -3,7 +3,7 @@ Getting some proper practice writing algorithms and data structures.
 
 # Implemented
 - Binary search trees
-- Red black trees (not deletion)
+- Red black trees
 - Simplex method for linear programming
 - Power iteration
 - Back propogation
