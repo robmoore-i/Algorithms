@@ -14,9 +14,7 @@ Getting some proper practice writing algorithms and data structures.
 
 # To do
 - Patricia tries
-- Rubik's cube solver
 - Radix trees
 - Ukkonen's suffix tree construction
-- BFS
 - Simplex with Bland's rule
 - Integer programming with Gomory cuts, Knapsack cover cuts and branch & bound
